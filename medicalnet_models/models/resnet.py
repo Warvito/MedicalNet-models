@@ -211,8 +211,7 @@ def load_weights(cached_file: str, model: ResNet) -> ResNet:
     pretrained_state_dict = torch.load(cached_file)
     pretrained_state_dict = pretrained_state_dict["state_dict"]
     pretrained_state_dict = {k.replace("module.", ""): v for k, v in pretrained_state_dict.items()}
-    model.load_state_dict(pretrained_state_dict)
-    return model
+    return model.load_state_dict(pretrained_state_dict)
 
 
 def medicalnet_resnet10(
