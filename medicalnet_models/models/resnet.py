@@ -206,6 +206,15 @@ def download_model(url: str, filename: str, model_dir: Optional[str] = None, pro
     return cached_file
 
 
+def load_weights(cached_file: str, model: ResNet) -> ResNet:
+    """Fix checkpoints saved with DataParallel wrapper"""
+    pretrained_state_dict = torch.load(cached_file)
+    pretrained_state_dict = pretrained_state_dict["state_dict"]
+    pretrained_state_dict = {k.replace("module.", ""): v for k, v in pretrained_state_dict.items()}
+    model.load_state_dict(pretrained_state_dict)
+    return model
+
+
 def medicalnet_resnet10(
     model_dir: Optional[str] = None,
     filename: str = "resnet_10.pth",
@@ -218,7 +227,7 @@ def medicalnet_resnet10(
         progress,
     )
     model = ResNet(BasicBlock, [1, 1, 1, 1])
-    model.load_state_dict(torch.load(cached_file))
+    model = load_weights(cached_file, model)
     return model
 
 
@@ -250,7 +259,7 @@ def medicalnet_resnet18(
         progress,
     )
     model = ResNet(BasicBlock, [2, 2, 2, 2])
-    model.load_state_dict(torch.load(cached_file))
+    model = load_weights(cached_file, model)
     return model
 
 
@@ -266,7 +275,7 @@ def medicalnet_resnet18_23datasets(
         progress,
     )
     model = ResNet(BasicBlock, [2, 2, 2, 2])
-    model.load_state_dict(torch.load(cached_file))
+    model = load_weights(cached_file, model)
     return model
 
 
@@ -282,7 +291,7 @@ def medicalnet_resnet34(
         progress,
     )
     model = ResNet(BasicBlock, [3, 4, 6, 3])
-    model.load_state_dict(torch.load(cached_file))
+    model = load_weights(cached_file, model)
     return model
 
 
@@ -298,7 +307,7 @@ def medicalnet_resnet34_23datasets(
         progress,
     )
     model = ResNet(BasicBlock, [3, 4, 6, 3])
-    model.load_state_dict(torch.load(cached_file))
+    model = load_weights(cached_file, model)
     return model
 
 
@@ -314,7 +323,7 @@ def medicalnet_resnet50(
         progress,
     )
     model = ResNet(Bottleneck, [3, 4, 6, 3])
-    model.load_state_dict(torch.load(cached_file))
+    model = load_weights(cached_file, model)
     return model
 
 
@@ -330,7 +339,7 @@ def medicalnet_resnet50_23datasets(
         progress,
     )
     model = ResNet(Bottleneck, [3, 4, 6, 3])
-    model.load_state_dict(torch.load(cached_file))
+    model = load_weights(cached_file, model)
     return model
 
 
@@ -346,7 +355,7 @@ def medicalnet_resnet101(
         progress,
     )
     model = ResNet(Bottleneck, [3, 4, 23, 3])
-    model.load_state_dict(torch.load(cached_file))
+    model = load_weights(cached_file, model)
     return model
 
 
@@ -362,7 +371,7 @@ def medicalnet_resnet152(
         progress,
     )
     model = ResNet(Bottleneck, [3, 8, 36, 3])
-    model.load_state_dict(torch.load(cached_file))
+    model = load_weights(cached_file, model)
     return model
 
 
@@ -378,5 +387,5 @@ def medicalnet_resnet200(
         progress,
     )
     model = ResNet(Bottleneck, [3, 24, 36, 3])
-    model.load_state_dict(torch.load(cached_file))
+    model = load_weights(cached_file, model)
     return model

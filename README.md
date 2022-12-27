@@ -5,6 +5,10 @@ Unofficial repository to easily access MedicalNet models ([Med3D: Transfer Learn
 In this repository we create entrypoints to make it easy to download MedicalNet models using torch [Hub](https://pytorch.org/docs/stable/hub.html).
 
 ## Downloading a pretrained model
+```
+import torch
+model = torch.hub.load("Warvito/MedicalNet-models", 'medicalnet_resnet10')
+```
 
 ## Citing MedicalNet
 If you use this code or pre-trained models, please cite the following:
