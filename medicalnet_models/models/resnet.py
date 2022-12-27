@@ -184,7 +184,7 @@ class ResNet(nn.Module):
 def download_model(url: str, filename: str, model_dir: Optional[str] = None, progress: bool = True) -> str:
     if model_dir is None:
         hub_dir = torch.hub.get_dir()
-        model_dir = os.path.join(hub_dir, "checkpoints")
+        model_dir = os.path.join(hub_dir, "medicalnet")
 
     try:
         os.makedirs(model_dir)
@@ -206,16 +206,6 @@ def download_model(url: str, filename: str, model_dir: Optional[str] = None, pro
     return cached_file
 
 
-def load_weights(cached_file: str, model: ResNet) -> ResNet:
-    """Fix checkpoints saved with DataParallel wrapper"""
-    pretrained_state_dict = torch.load(cached_file)
-    pretrained_state_dict = pretrained_state_dict["state_dict"]
-    pretrained_state_dict = {k.replace("module.", ""): v for k, v in pretrained_state_dict.items()}
-    model.load_state_dict(pretrained_state_dict)
-
-    return model
-
-
 def medicalnet_resnet10(
     model_dir: Optional[str] = None,
     filename: str = "resnet_10.pth",
@@ -229,6 +219,7 @@ def medicalnet_resnet10(
     )
     model = ResNet(BasicBlock, [1, 1, 1, 1])
 
+    # Fix checkpoints saved with DataParallel wrapper
     pretrained_state_dict = torch.load(cached_file)
     pretrained_state_dict = pretrained_state_dict["state_dict"]
     pretrained_state_dict = {k.replace("module.", ""): v for k, v in pretrained_state_dict.items()}
@@ -249,7 +240,13 @@ def medicalnet_resnet10_23datasets(
         progress,
     )
     model = ResNet(BasicBlock, [1, 1, 1, 1])
-    model.load_state_dict(torch.load(cached_file))
+
+    # Fix checkpoints saved with DataParallel wrapper
+    pretrained_state_dict = torch.load(cached_file)
+    pretrained_state_dict = pretrained_state_dict["state_dict"]
+    pretrained_state_dict = {k.replace("module.", ""): v for k, v in pretrained_state_dict.items()}
+    model.load_state_dict(pretrained_state_dict)
+
     return model
 
 
@@ -265,7 +262,13 @@ def medicalnet_resnet18(
         progress,
     )
     model = ResNet(BasicBlock, [2, 2, 2, 2])
-    model = load_weights(cached_file, model)
+
+    # Fix checkpoints saved with DataParallel wrapper
+    pretrained_state_dict = torch.load(cached_file)
+    pretrained_state_dict = pretrained_state_dict["state_dict"]
+    pretrained_state_dict = {k.replace("module.", ""): v for k, v in pretrained_state_dict.items()}
+    model.load_state_dict(pretrained_state_dict)
+
     return model
 
 
@@ -281,7 +284,13 @@ def medicalnet_resnet18_23datasets(
         progress,
     )
     model = ResNet(BasicBlock, [2, 2, 2, 2])
-    model = load_weights(cached_file, model)
+
+    # Fix checkpoints saved with DataParallel wrapper
+    pretrained_state_dict = torch.load(cached_file)
+    pretrained_state_dict = pretrained_state_dict["state_dict"]
+    pretrained_state_dict = {k.replace("module.", ""): v for k, v in pretrained_state_dict.items()}
+    model.load_state_dict(pretrained_state_dict)
+
     return model
 
 
@@ -297,7 +306,13 @@ def medicalnet_resnet34(
         progress,
     )
     model = ResNet(BasicBlock, [3, 4, 6, 3])
-    model = load_weights(cached_file, model)
+
+    # Fix checkpoints saved with DataParallel wrapper
+    pretrained_state_dict = torch.load(cached_file)
+    pretrained_state_dict = pretrained_state_dict["state_dict"]
+    pretrained_state_dict = {k.replace("module.", ""): v for k, v in pretrained_state_dict.items()}
+    model.load_state_dict(pretrained_state_dict)
+
     return model
 
 
@@ -313,7 +328,13 @@ def medicalnet_resnet34_23datasets(
         progress,
     )
     model = ResNet(BasicBlock, [3, 4, 6, 3])
-    model = load_weights(cached_file, model)
+
+    # Fix checkpoints saved with DataParallel wrapper
+    pretrained_state_dict = torch.load(cached_file)
+    pretrained_state_dict = pretrained_state_dict["state_dict"]
+    pretrained_state_dict = {k.replace("module.", ""): v for k, v in pretrained_state_dict.items()}
+    model.load_state_dict(pretrained_state_dict)
+
     return model
 
 
@@ -329,7 +350,13 @@ def medicalnet_resnet50(
         progress,
     )
     model = ResNet(Bottleneck, [3, 4, 6, 3])
-    model = load_weights(cached_file, model)
+
+    # Fix checkpoints saved with DataParallel wrapper
+    pretrained_state_dict = torch.load(cached_file)
+    pretrained_state_dict = pretrained_state_dict["state_dict"]
+    pretrained_state_dict = {k.replace("module.", ""): v for k, v in pretrained_state_dict.items()}
+    model.load_state_dict(pretrained_state_dict)
+
     return model
 
 
@@ -345,7 +372,13 @@ def medicalnet_resnet50_23datasets(
         progress,
     )
     model = ResNet(Bottleneck, [3, 4, 6, 3])
-    model = load_weights(cached_file, model)
+
+    # Fix checkpoints saved with DataParallel wrapper
+    pretrained_state_dict = torch.load(cached_file)
+    pretrained_state_dict = pretrained_state_dict["state_dict"]
+    pretrained_state_dict = {k.replace("module.", ""): v for k, v in pretrained_state_dict.items()}
+    model.load_state_dict(pretrained_state_dict)
+
     return model
 
 
@@ -361,7 +394,13 @@ def medicalnet_resnet101(
         progress,
     )
     model = ResNet(Bottleneck, [3, 4, 23, 3])
-    model = load_weights(cached_file, model)
+
+    # Fix checkpoints saved with DataParallel wrapper
+    pretrained_state_dict = torch.load(cached_file)
+    pretrained_state_dict = pretrained_state_dict["state_dict"]
+    pretrained_state_dict = {k.replace("module.", ""): v for k, v in pretrained_state_dict.items()}
+    model.load_state_dict(pretrained_state_dict)
+
     return model
 
 
@@ -377,7 +416,13 @@ def medicalnet_resnet152(
         progress,
     )
     model = ResNet(Bottleneck, [3, 8, 36, 3])
-    model = load_weights(cached_file, model)
+
+    # Fix checkpoints saved with DataParallel wrapper
+    pretrained_state_dict = torch.load(cached_file)
+    pretrained_state_dict = pretrained_state_dict["state_dict"]
+    pretrained_state_dict = {k.replace("module.", ""): v for k, v in pretrained_state_dict.items()}
+    model.load_state_dict(pretrained_state_dict)
+
     return model
 
 
@@ -393,5 +438,11 @@ def medicalnet_resnet200(
         progress,
     )
     model = ResNet(Bottleneck, [3, 24, 36, 3])
-    model = load_weights(cached_file, model)
+
+    # Fix checkpoints saved with DataParallel wrapper
+    pretrained_state_dict = torch.load(cached_file)
+    pretrained_state_dict = pretrained_state_dict["state_dict"]
+    pretrained_state_dict = {k.replace("module.", ""): v for k, v in pretrained_state_dict.items()}
+    model.load_state_dict(pretrained_state_dict)
+
     return model
