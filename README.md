@@ -4,6 +4,9 @@
 Unofficial repository to easily access MedicalNet models ([Med3D: Transfer Learning for 3D Medical Image Analysis](https://arxiv.org/abs/1904.00625)). 
 In this repository we create entrypoints to make it easy to download MedicalNet models using torch [Hub](https://pytorch.org/docs/stable/hub.html).
 
+Note: Resnet18 and Resnet34 not available since state_dict does not match with the ones from the original 
+implementation.
+
 ## Downloading a pretrained model
 ```
 import torch
