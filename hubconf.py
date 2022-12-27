@@ -1,46 +1,16 @@
 # Optional list of dependencies required by the package
-dependencies = ["torch"]
+dependencies = ["torch", "gdown"]
 
-
-def medicalnet_resnet10():
-    pass
-
-
-def medicalnet_resnet10_23datasets():
-    pass
-
-
-def medicalnet_resnet18():
-    pass
-
-
-def medicalnet_resnet18_23datasets():
-    pass
-
-
-def medicalnet_resnet34():
-    pass
-
-
-def medicalnet_resnet34_23datasets():
-    pass
-
-
-def medicalnet_resnet50():
-    pass
-
-
-def medicalnet_resnet50_23datasets():
-    pass
-
-
-def medicalnet_resnet101():
-    pass
-
-
-def medicalnet_resnet152():
-    pass
-
-
-def medicalnet_resnet200():
-    pass
+from medicalnet_models.models.resnet import (
+    medicalnet_resnet10,
+    medicalnet_resnet10_23datasets,
+    medicalnet_resnet18,
+    medicalnet_resnet18_23datasets,
+    medicalnet_resnet34,
+    medicalnet_resnet34_23datasets,
+    medicalnet_resnet50,
+    medicalnet_resnet50_23datasets,
+    medicalnet_resnet101,
+    medicalnet_resnet152,
+    medicalnet_resnet200
+)

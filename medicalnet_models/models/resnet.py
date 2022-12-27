@@ -1,23 +1,12 @@
-from functools import partial
 from torch import Tensor
-from typing import Any, Callable, List, Optional, Type, Union
+from typing import List, Type, Union
+import errno
+import os
+from typing import Optional
 
+import gdown
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-from torch.autograd import Variable
-
-
-__all__ = [
-    "ResNet",
-    "resnet10",
-    "resnet18",
-    "resnet34",
-    "resnet50",
-    "resnet101",
-    "resnet152",
-    "resnet200",
-]
 
 
 def conv3x3x3(in_planes: int, out_planes: int, stride: int = 1, dilation: int = 1) -> nn.Conv3d:
@@ -148,7 +137,6 @@ class ResNet(nn.Module):
         self.layer3 = self._make_layer(block, 256, layers[2], stride=1, dilation=2)
         self.layer4 = self._make_layer(block, 512, layers[3], stride=1, dilation=4)
 
-
     def _make_layer(
         self, block: Type[Union[BasicBlock, Bottleneck]], planes: int, blocks: int, stride: int = 1, dilation: int = 1
     ):
@@ -193,29 +181,202 @@ class ResNet(nn.Module):
         return x
 
 
-def resnet10():
-    return ResNet(BasicBlock, [1, 1, 1, 1])
+def download_model(url: str, filename: str, model_dir: Optional[str] = None, progress: bool = True) -> str:
+    if model_dir is None:
+        hub_dir = torch.hub.get_dir()
+        model_dir = os.path.join(hub_dir, "checkpoints")
+
+    try:
+        os.makedirs(model_dir)
+    except OSError as e:
+        if e.errno == errno.EEXIST:
+            # Directory already exists, ignore.
+            pass
+        else:
+            # Unexpected OSError, re-raise.
+            raise
+
+    cached_file = os.path.join(model_dir, filename)
+    if not os.path.exists(cached_file):
+        gdown.download(
+            url=url,
+            output=cached_file,
+            quiet=not progress,
+        )
+    return cached_file
 
 
-def resnet18():
-    return ResNet(BasicBlock, [2, 2, 2, 2])
+def medicalnet_resnet10(
+    model_dir: Optional[str] = None,
+    filename: str = "resnet_10.pth",
+    progress: bool = True,
+) -> ResNet:
+    cached_file = download_model(
+        "https://drive.google.com/uc?export=download&id=1lCEK_K5q90YaOtyfkGAjUCMrqcQZUYV0",
+        filename,
+        model_dir,
+        progress,
+    )
+    model = ResNet(BasicBlock, [1, 1, 1, 1])
+    model.load_state_dict(torch.load(cached_file))
+    return model
 
 
-def resnet34():
-    return ResNet(BasicBlock, [3, 4, 6, 3])
+def medicalnet_resnet10_23datasets(
+    model_dir: Optional[str] = None,
+    filename: str = "resnet_10_23dataset.pth",
+    progress: bool = True,
+) -> ResNet:
+    cached_file = download_model(
+        "https://drive.google.com/uc?export=download&id=1HLpyQ12SmzmCIFjMcNs4j3Ijyy79JYLk",
+        filename,
+        model_dir,
+        progress,
+    )
+    model = ResNet(BasicBlock, [1, 1, 1, 1])
+    model.load_state_dict(torch.load(cached_file))
+    return model
 
 
-def resnet50():
-    return ResNet(Bottleneck, [3, 4, 6, 3])
+def medicalnet_resnet18(
+    model_dir: Optional[str] = None,
+    filename: str = "resnet_18.pth",
+    progress: bool = True,
+) -> ResNet:
+    cached_file = download_model(
+        "https://drive.google.com/uc?export=download&id=1welifAh3lQUy7CrrL7seiPalqTI7JmLV",
+        filename,
+        model_dir,
+        progress,
+    )
+    model = ResNet(BasicBlock, [2, 2, 2, 2])
+    model.load_state_dict(torch.load(cached_file))
+    return model
 
 
-def resnet101():
-    return ResNet(Bottleneck, [3, 4, 23, 3])
+def medicalnet_resnet18_23datasets(
+    model_dir: Optional[str] = None,
+    filename: str = "resnet_18_23dataset.pth",
+    progress: bool = True,
+) -> ResNet:
+    cached_file = download_model(
+        "https://drive.google.com/uc?export=download&id=1mCI1JOGWkcR8XKvGh8tOTXsNgv4KNuxz",
+        filename,
+        model_dir,
+        progress,
+    )
+    model = ResNet(BasicBlock, [2, 2, 2, 2])
+    model.load_state_dict(torch.load(cached_file))
+    return model
 
 
-def resnet152():
-    return ResNet(Bottleneck, [3, 8, 36, 3])
+def medicalnet_resnet34(
+    model_dir: Optional[str] = None,
+    filename: str = "resnet_34.pth",
+    progress: bool = True,
+) -> ResNet:
+    cached_file = download_model(
+        "https://drive.google.com/uc?export=download&id=1VI0VJIuEkMvoAhC4DbthbTN-fqY8ZSkS",
+        filename,
+        model_dir,
+        progress,
+    )
+    model = ResNet(BasicBlock, [3, 4, 6, 3])
+    model.load_state_dict(torch.load(cached_file))
+    return model
 
 
-def resnet200():
-    return ResNet(Bottleneck, [3, 24, 36, 3])
+def medicalnet_resnet34_23datasets(
+    model_dir: Optional[str] = None,
+    filename: str = "resnet_34_23dataset.pth",
+    progress: bool = True,
+) -> ResNet:
+    cached_file = download_model(
+        "https://drive.google.com/uc?export=download&id=1BqJA2wdGCMd432z0Q4H9152LG2Zveo3y",
+        filename,
+        model_dir,
+        progress,
+    )
+    model = ResNet(BasicBlock, [3, 4, 6, 3])
+    model.load_state_dict(torch.load(cached_file))
+    return model
+
+
+def medicalnet_resnet50(
+    model_dir: Optional[str] = None,
+    filename: str = "resnet_50.pth",
+    progress: bool = True,
+) -> ResNet:
+    cached_file = download_model(
+        "https://drive.google.com/uc?export=download&id=1E7005_ZT_z6tuPpPNRvYkMBWzAJNMIIC",
+        filename,
+        model_dir,
+        progress,
+    )
+    model = ResNet(Bottleneck, [3, 4, 6, 3])
+    model.load_state_dict(torch.load(cached_file))
+    return model
+
+
+def medicalnet_resnet50_23datasets(
+    model_dir: Optional[str] = None,
+    filename: str = "resnet_50_23dataset.pth",
+    progress: bool = True,
+) -> ResNet:
+    cached_file = download_model(
+        "https://drive.google.com/uc?export=download&id=1qXyw9S5f-6N1gKECDfMroRnPZfARbqOP",
+        filename,
+        model_dir,
+        progress,
+    )
+    model = ResNet(Bottleneck, [3, 4, 6, 3])
+    model.load_state_dict(torch.load(cached_file))
+    return model
+
+
+def medicalnet_resnet101(
+    model_dir: Optional[str] = None,
+    filename: str = "resnet_101.pth",
+    progress: bool = True,
+) -> ResNet:
+    cached_file = download_model(
+        "https://drive.google.com/uc?export=download&id=1mMNQvhlaS-jmnbyqdniGNSD5aONIidKt",
+        filename,
+        model_dir,
+        progress,
+    )
+    model = ResNet(Bottleneck, [3, 4, 23, 3])
+    model.load_state_dict(torch.load(cached_file))
+    return model
+
+
+def medicalnet_resnet152(
+    model_dir: Optional[str] = None,
+    filename: str = "resnet_152.pth",
+    progress: bool = True,
+) -> ResNet:
+    cached_file = download_model(
+        "https://drive.google.com/uc?export=download&id=1Lixxc9YsZZqAl3mnAh7PwT8c3sTXoinE",
+        filename,
+        model_dir,
+        progress,
+    )
+    model = ResNet(Bottleneck, [3, 8, 36, 3])
+    model.load_state_dict(torch.load(cached_file))
+    return model
+
+
+def medicalnet_resnet200(
+    model_dir: Optional[str] = None,
+    filename: str = "resnet_200.pth",
+    progress: bool = True,
+) -> ResNet:
+    cached_file = download_model(
+        "https://drive.google.com/uc?export=download&id=13BGtYw2fkvDSlx41gOZ5qTFhhrDB_zXr",
+        filename,
+        model_dir,
+        progress,
+    )
+    model = ResNet(Bottleneck, [3, 24, 36, 3])
+    model.load_state_dict(torch.load(cached_file))
+    return model
