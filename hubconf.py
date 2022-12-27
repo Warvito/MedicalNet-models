@@ -4,10 +4,6 @@ dependencies = ["torch", "gdown"]
 from medicalnet_models.models.resnet import (
     medicalnet_resnet10,
     medicalnet_resnet10_23datasets,
-    medicalnet_resnet18,
-    medicalnet_resnet18_23datasets,
-    medicalnet_resnet34,
-    medicalnet_resnet34_23datasets,
     medicalnet_resnet50,
     medicalnet_resnet50_23datasets,
     medicalnet_resnet101,
