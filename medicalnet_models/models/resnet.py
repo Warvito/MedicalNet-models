@@ -313,7 +313,8 @@ def medicalnet_resnet101(
 
     # Fix checkpoints saved with DataParallel wrapper
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    pretrained_state_dict = torch.load(cached_file, map_location=device)    pretrained_state_dict = pretrained_state_dict["state_dict"]
+    pretrained_state_dict = torch.load(cached_file, map_location=device)
+    pretrained_state_dict = pretrained_state_dict["state_dict"]
     pretrained_state_dict = {k.replace("module.", ""): v for k, v in pretrained_state_dict.items()}
     model.load_state_dict(pretrained_state_dict)
 
@@ -335,7 +336,8 @@ def medicalnet_resnet152(
 
     # Fix checkpoints saved with DataParallel wrapper
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    pretrained_state_dict = torch.load(cached_file, map_location=device)    pretrained_state_dict = pretrained_state_dict["state_dict"]
+    pretrained_state_dict = torch.load(cached_file, map_location=device)
+    pretrained_state_dict = pretrained_state_dict["state_dict"]
     pretrained_state_dict = {k.replace("module.", ""): v for k, v in pretrained_state_dict.items()}
     model.load_state_dict(pretrained_state_dict)
 
@@ -357,7 +359,8 @@ def medicalnet_resnet200(
 
     # Fix checkpoints saved with DataParallel wrapper
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    pretrained_state_dict = torch.load(cached_file, map_location=device)    pretrained_state_dict = pretrained_state_dict["state_dict"]
+    pretrained_state_dict = torch.load(cached_file, map_location=device)
+    pretrained_state_dict = pretrained_state_dict["state_dict"]
     pretrained_state_dict = {k.replace("module.", ""): v for k, v in pretrained_state_dict.items()}
     model.load_state_dict(pretrained_state_dict)
 
